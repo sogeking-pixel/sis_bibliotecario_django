@@ -1,0 +1,95 @@
+{% extends "components/modal.html" %}
+{% block modal_body %}
+<form method="POST" action="{% url 'author.create' %}" role="form" class="form text-left row" enctype="multipart/form-data"> 
+    {% csrf_token %}
+
+    <div class="form-group mb-5 col-12 col-md-6"> 
+        <label class="form-label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+        <div class="input-group input-group-alternative">
+             
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-email-83"></i></span>               
+            </div>
+             {{ form.first_name }}
+        </div>      
+    </div>
+
+
+
+    <div class="form-group mb-5 col-12 col-md-6"> 
+        <label class="form-label" for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+        <div class="input-group input-group-alternative">
+             
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-email-83"></i></span>               
+            </div>
+             {{ form.last_name }}
+        </div>      
+    </div>
+
+
+    <div class="form-group mb-5 col-12 col-md-6"> 
+        <label class="form-label" for="{{ form.nacionality.id_for_label }}">{{ form.nacionality.label }}</label>
+        <div class="input-group input-group-alternative">
+             
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-email-83"></i></span>               
+            </div>
+             {{ form.nacionality }}
+        </div>      
+    </div>
+
+
+
+    <div class="form-group mb-5 col-6 "> 
+       
+        <label class="form-label" for="{{ form.photo.id_for_label }}">{{ form.photo.label }}</label>
+          {{ form.photo }}
+        {% comment %} <div class="input-group input-group-alternative">
+             
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-email-83"></i></span>               
+            </div>
+            
+        </div>       {% endcomment %}
+    </div>
+
+    
+    <div class="form-group mb-5 col-6"> 
+        <label class="form-label">Previsualizacion</label>
+        <div id="previewContainer" class="mx-auto">
+            <img id="previewImage" src="#" alt="Vista previa"  class="mx-auto" style="max-width: 180px; display: none;">
+        </div>
+    </div>
+
+  <script>
+        // Seleccionar el input y el contenedor de la vista previa
+        const imageInput = document.getElementById('id_photo');
+        const previewImage = document.getElementById('previewImage');
+
+        // Agregar un evento para cuando se selecciona un archivo
+        imageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+
+            if (file) {
+                // Crear una URL para mostrar la imagen
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Si no hay archivo, ocultar la vista previa
+                previewImage.src = '#';
+                previewImage.style.display = 'none';
+            }
+        });
+    </script>
+
+    <div class="form-group mb-3 col-12 col-md-3 ml-auto"> 
+       
+        <button type="submit" class="btn btn-primary mt-3 col-12">Registrar</button>
+    </div>
+</form>
+{% endblock %}

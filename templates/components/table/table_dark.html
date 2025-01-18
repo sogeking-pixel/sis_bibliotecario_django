@@ -1,0 +1,82 @@
+{% load custom_tags %}
+
+<div class="row">
+    <div class="col">
+      <div class="card bg-default shadow">
+        
+        <div class="card-header bg-transparent border-0">
+          <h3 class="text-white mb-0">{{ title }}</h3>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table align-items-center table-dark table-flush">
+            <thead class="thead-dark">
+              <tr>
+
+                {% for header in headers %}
+                  {% comment %} <th>{{ header }}</th> {% endcomment %}
+                  <th scope="col" class="sort" data-sort="{{header}}">{{ header }}</th>
+                {% endfor %}
+
+                <th scope="col"></th>
+
+              </tr>
+            </thead>
+
+
+            <tbody class="list">
+              
+              {% for item in data.object_list %}
+                <tr>
+                  {% for field in fields %}
+
+                    {% if forloop.first  %}
+
+                        <th scope="row">
+                          <div class="media align-items-center">
+
+                            <div class="media-body">
+                              <span class="name mb-0 text-sm">{{ item|get_item:field }}</span>
+                            </div>
+
+                          </div>
+                        </th>
+
+                    {% else %}
+                      <td class="budget">{{ item|get_item:field }}</td>
+                    {% endif %}
+                  {% endfor %}
+                  <td class="text-right">
+                    <div class="dropdown">
+                      <a
+                        class="btn btn-sm btn-icon-only text-light"
+                        href="#"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        <i class="fas fa-ellipsis-v"></i>
+                      </a>
+                      <div
+                        class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                      >
+                        {% for key, accion in accions.items %}
+                        <a class="dropdown-item" href="{% url accion.url item.id %}">{{ accion.text }}</a>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+              
+            </tbody>
+          </table>
+        </div>
+
+        {% comment %} pagination xd {% endcomment %}
+        {% include 'components/table/card_pagination.html' %}
+
+      </div>
+    </div>
+  </div>

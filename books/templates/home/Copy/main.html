@@ -1,0 +1,103 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block title %} Tables {%endblock title %} 
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css" />
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+
+<div class="header bg-primary pb-7">
+  <div class="container-fluid ">
+    <div class="header-body ">
+      <div class="row align-items-center py-4 ">
+
+
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-white d-inline-block mb-0">Gestion de Copias</h6>
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index'%}"><i class="fas fa-home"></i></a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">Copias-Libros</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+
+        {% include 'components/modal_create_copy.html' with title='Crear' title_modal='Crear Nueva Copia' modal_id='modal_create_copy' form=form%}
+
+        
+        </div>
+           
+            
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+ 
+  <div class="row">
+    
+            
+         
+   <div class="col">
+    <div class="card px-5 pt-2 pb-5">
+        
+      <div class="card-header bg-transparent border-0 row">
+       
+        <h3 class="text-primary mb-3 text-xl col-6">{{ table.title }}</h3>
+        {% include "components/messages_alert.html" %}
+       
+      </div>
+      
+      {% include 'components/data_table.html' with  table_id='tableCopyExample' title=table.title headers=table.headers fields=table.fields data=table.data accions=table.accions %}
+    </div>
+    </div>
+  </div>
+   
+
+  {% include "includes/footer.html" %}
+</div>
+
+
+  
+
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+  {% include "includes/scripts_data_table.html" %}
+  <script>  
+    
+     $(document).ready(function () {
+      if (!$.fn.DataTable.isDataTable('#tableCopyExample')) {
+          $('#tableCopyExample').DataTable({
+              scrollX: true
+          });
+      }
+  });
+  </script>
+
+  <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const deleteButtons = document.querySelectorAll('.btn-delete');
+          const deleteForm = document.getElementById('deleteForm');
+            $('#tableCopyExample tbody').on('click', '.delete-button', function () {
+              deleteUrl = $(this).data('delete-url');
+              const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+              deleteForm.action = deleteUrl
+              modal.show();
+          });
+        });
+
+    </script>
+{% endblock javascripts %}
+
+{% endblock content %}

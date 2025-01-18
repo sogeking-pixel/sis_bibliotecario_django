@@ -1,0 +1,65 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} no se {% endblock title %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css" />
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+<div class="header bg-primary pb-6 zsd">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-white d-inline-block mb-0">Datos de {{loan.code}}</h6>
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index'%}"><i class="fas fa-home"></i></a>
+              </li>
+              <li class="breadcrumb-item"><a href="{% url 'loan.index'%}">Prestamos</a></li>
+              <li class="breadcrumb-item active" aria-current="page">prestamo</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+  <div class="row mx-2">
+    <div class="col-xl-4 col-lg-5 col-md-6 order-xl-2 order-lg-2 order-md-2">
+      
+      {% include 'components/card_profile_loan.html' with user=loan.student %} 
+
+      {% include 'components/card_copy_loan.html' with copy=loan.copy book=loan.copy.book %} 
+         
+
+    </div>
+
+    <div class="col-xl-8 col-lg-7 col-md-6 order-xl-1 order-lg-1">
+        {% include 'components/form_update_loan.html' with form_title='Editar Prestamos' %}
+    </div>
+
+    
+    
+          
+  </div>
+
+  {% include "includes/footer.html" %}
+
+</div>
+
+{% block javascripts %}
+
+{% endblock javascripts %}
+
+{% endblock content %}
+

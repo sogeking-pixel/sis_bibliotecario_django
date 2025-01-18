@@ -1,0 +1,62 @@
+{% load static %}
+{% load custom_tags %}
+
+<nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+  <div class="scrollbar-inner">
+    <!-- Brand -->
+    <div class="sidenav-header  align-items-center">
+      <a class="navbar-brand" href="{% url "index" %}">
+        <img src="{% static 'assets/img/brand/blue.png' %}" class="navbar-brand-img" alt="Argon Design - Jinja Template Logo.">
+      </a>
+    </div>
+    <div class="navbar-inner">
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+        <!-- Nav items -->
+        <ul class="navbar-nav">
+          
+          {% url 'index' as index_url %}
+          {% include "components/nav_item.html" with url_name=index_url url_text='Dashboard' icon='fas fa-home' %}
+
+
+          {% url 'user.index' as user_index_url %}
+          {% include "components/nav_item.html" with url_name=user_index_url url_text='Usuarios' icon='fa fa-users' %}
+
+          {% url 'author.index' as author_index_url %} 
+          {% include "components/nav_item.html" with url_name=author_index_url url_text='Autores' icon='ni ni-single-02 ' %}
+
+          {% url 'sanction.index' as sanction_index_url %}
+          {% include "components/nav_item.html" with url_name=sanction_index_url url_text='Sanciones' icon='fa fa-exclamation-triangle' %}
+          
+          {% url 'book.index' as book_index_url %}
+          {% url 'copy.index' as copy_index_url %}
+          <li class="nav-item">
+            <a class="nav-link   {% if request.path|starts_with:book_index_url or request.path|starts_with:copy_index_url %}active {%else%}collapsed{% endif %} " href="#navbar-components-1" data-toggle="collapse" role="button"  aria-expanded="{% if request.path|starts_with:book_index_url or  request.path|starts_with:copy_index_url %}true{%else%}false{% endif %}" aria-controls="navbar-components">
+              <i class="ni ni-books text-gray"></i>
+              <span class="nav-link-text">Libros</span>
+            </a>
+            <div class="collapse  {% if request.path|starts_with:book_index_url or  request.path|starts_with:copy_index_url %}show{% endif %}" id="navbar-components-1" style="">
+              <ul class="nav nav-sm flex-column px-3">
+                
+             
+              {% include "components/nav_item.html" with url_name=book_index_url url_text='Principal'  icon='ni ni-book-bookmark' %}
+
+             
+              {% include "components/nav_item.html" with url_name=copy_index_url url_text='Copias'  icon='ni ni-single-copy-04' %}
+                
+              </ul>
+            </div>
+          </li>
+          
+          {% url 'loan.index' as loan_index_url %}
+          {% include "components/nav_item.html" with url_name=loan_index_url url_text='Prestamos' icon='fa fa-retweet' %}
+
+       
+          
+
+        </ul>
+       
+      </div>
+    </div>
+  </div>
+</nav>

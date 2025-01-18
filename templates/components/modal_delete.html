@@ -1,0 +1,92 @@
+
+
+<div
+  class="modal fade"
+  id="{{modal_id}}"
+  tabindex="-1"
+  aria-labelledby="deleteSalesLabel-1"
+  aria-hidden="true"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteSalesLabel-1">
+         {{title_modal}}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+        <div class="modal-body">
+          Estás seguro de que deseas eliminar este elemento?
+        </div>
+
+         <form id = "deleteForm" method="POST" action="">
+            {% csrf_token %}
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-danger" id="confirmDelete">Eliminar</button>
+        </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+ {% comment %} <script>
+
+  document.addEventListener('DOMContentLoaded', function () {
+    
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+// Obtener el CSRF token
+    let deleteUrl = ''; // Guardar la URL de eliminación actual
+
+    // Inicializar DataTable
+    const table = $('#tableuserexample').DataTable();
+
+    // Delegación de eventos: clic en botones de eliminar
+    $('#tableuserexample tbody').on('click', '.delete-button', function () {
+        deleteUrl = $(this).data('delete-url'); // Obtener la URL del botón
+        // Mostrar el modal de confirmación
+        const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
+    });
+
+    // Confirmar la eliminación
+    document.getElementById('confirmDelete').addEventListener('click', function () {
+        if (deleteUrl) {
+            // Enviar la petición POST para eliminar el registro
+            console.log(deleteUrl, csrfToken);
+            fetch(deleteUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken, // Agregar el token CSRF
+                },
+            })
+               .then((response) => {
+                        if (response.ok) {
+                            //alert('Usuario eliminado exitosamente');
+                            location.reload(); // Recarga la página
+                        } else {
+                            //alert('Hubo un problema al eliminar el usuario');
+                        }
+                    })
+                .catch(error => console.error('Error:', error));
+        }
+    });
+});
+
+</script> {% endcomment %}

@@ -1,0 +1,69 @@
+from django.db import models
+import random
+from django.utils import timezone
+from utils.utils import compress_img, delete_img
+
+
+class Student(models.Model):
+    code_student = models.CharField( max_length=10)
+    first_name =  models.CharField( max_length=50)
+    last_name = models.CharField( max_length=50)
+    dni = models.CharField( max_length=8, unique=True)
+    number_phone = models.CharField(max_length=9)
+    address = models.CharField( max_length=255)
+    email = models.EmailField( max_length=254)
+    photo = models.ImageField( upload_to='imagenes/Students/', height_field=None, width_field=None, max_length=None)
+    date_boarn  = models.DateField( )
+    create_at = models.DateTimeField( auto_now_add=True)
+    updated_at = models.DateTimeField( auto_now=True)
+    
+    def save(self,*args, **kwargs):
+        self.code_student = generar_code(self.dni)
+        self.photo = compress_img(self.photo)       
+        super().save(*args, **kwargs)
+    
+    def delete(self,*args, **kwargs):
+        if self.photo:
+            delete_img(self.photo)
+        super().delete(self,*args, **kwargs)
+        
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+def generar_code(dni):
+    year = timezone.now().year
+    year_str = str(year)[-2:]
+    dni_part = dni[:2]
+    random_part =''.join([str(random.randint(0, 9)) for _ in range(6)])
+    unique_code = f"{dni_part}{random_part}{year_str}"
+    while Student.objects.filter(code_student=unique_code).exists():
+        random_part = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        unique_code = f"{dni_part}{year_str}{random_part}"
+    return unique_code
+
+    
+class Author(models.Model):
+    first_name =  models.CharField( max_length=50)
+    last_name = models.CharField( max_length=50)
+    nacionality =  models.CharField( max_length=50)
+    photo =  models.ImageField( upload_to='imagenes/Authors/', height_field=None, width_field=None, max_length=None)
+    
+    def save(self,*args, **kwargs):
+        self.photo = compress_img(self.photo)       
+        super().save(*args, **kwargs)
+    
+    def delete(self,*args, **kwargs):
+        if self.photo:
+            delete_img(self.photo)
+        super().delete(self,*args, **kwargs)
+    
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+class Sanction(models.Model):
+    name = models.CharField( max_length=50)
+    description = models.TextField()
+    def __str__(self):
+        return f"{self.name}"

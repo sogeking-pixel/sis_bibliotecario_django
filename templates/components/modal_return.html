@@ -1,0 +1,96 @@
+
+
+<div
+  class="modal fade"
+  id="{{modal_id}}"
+  tabindex="-1"
+  aria-labelledby="deleteSalesLabel-1"
+  aria-hidden="true"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-success d-flex align-items-center">
+        <h5 class="modal-title text-white" id="deleteSalesLabel-1">
+          {{title_modal}}
+        </h5>
+        <button type="button" class="close ml-auto text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-white">&times;</span>
+        </button>
+      </div>    
+        <div class="modal-body">
+          <div class="mb-3">
+              <h3>Detalle del prestamo</h3>
+              {% comment %} <p class="mb-1">Codigo de prestamo: <span id="modalLoanCode"></span></p>
+              <p class="mb-1">Titulo del libro: <span id="modalBookTitle"></span></p>
+              <p class="mb-1">Codigo del libro: <span id="modalBookTitle"></span></p>
+              <p class="mb-1">Prestado a: <span id="modalBorrower"></span></p> {% endcomment %}
+          </div>
+         
+          <div class="mb-4">
+            <label for="loanCode" class="form-label">Codigo de prestamo</label>  
+            <a href="" title="Ver detalles" class="btn btn-primary btn-sm" target="_blank">
+              <i class="fas fa-link"></i>
+            </a>
+            <input type="text" class="form-control" id="loanCode" value="123456" disabled>
+          </div>
+            
+            
+          <div class="mb-4 row">
+              
+            <div class="col-6">
+              <label for="returnDate" class="form-label">Codigo de copia</label>
+              <input type="date" class="form-control" id="returnDate" value="2024-01-30" disabled>
+            </div>
+            <div class="col-6">
+              <label for="returnDate" class="form-label">Dni del prestante</label>
+              <input type="date" class="form-control" id="returnDate" value="2024-01-30" disabled>
+            </div>
+            
+          </div>
+
+           <div class="mb-4">
+              <label for="returnDate" class="form-label">Titulo del libro</label>
+              <input type="date" class="form-control" id="returnDate" value="2024-01-30" disabled>
+          </div>
+
+          <div class="mb-2 row">
+              
+            <div class="col-6">
+              <label for="returnDate" class="form-label">Fecha Creacion</label>
+              <input type="date" class="form-control" id="returnDate" value="2024-01-30" disabled>
+            </div>
+            <div class="col-6">
+              <label for="returnDate" class="form-label">Fecha Limite</label>
+              <input type="date" class="form-control" id="returnDate" value="2024-01-30" disabled>
+            </div>
+
+          </div>
+
+          
+        </div>
+
+         <form id = "returnForm" method="POST" action="" class="px-2">
+            {% csrf_token %}
+            <div class="form-group mb-4 col-12"> 
+                <label class="form-label" for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
+                {{ form.comment }}
+            </div>
+
+             <div class="form-group mb-4 col-12"> 
+                <label class="form-label" for="{{ form.sanctions.id_for_label }}">{{ form.sanctions.label }}</label>
+                {{ form.sanctions }}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-success" id="confirmReturn">Confirmar Devolucion</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+

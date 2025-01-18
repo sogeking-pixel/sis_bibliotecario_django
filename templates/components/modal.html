@@ -1,0 +1,29 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-secondary btn-neutral btn-icon" data-toggle="modal" data-target="#{{modal_id}}">
+  <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
+	
+  <span class="btn-inner--text m-0">{{title}}</span>
+  {% comment %} <i class="ni ni-fat-add"></i> Nuevo {% endcomment %}
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="{{modal_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{title_modal}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          {% block modal_body %}
+          {% endblock modal_body%}
+      </div>
+      {% comment %} <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+      </div> {% endcomment %}
+    </div>
+  </div>
+</div>

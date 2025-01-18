@@ -1,0 +1,41 @@
+ {% load static %}
+
+ <div class="card ">
+        
+        <img src="{{ author.photo.url }}" alt="Image placeholder" class="card-img-top" >
+
+
+        <div class="card-body ">
+          
+          <div class="text-center mt-3 mb-0 pb-0">
+            <h5 class="h2">
+              {{ author.first_name|title }} {{ author.last_name|title }}
+            </h5>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="card-profile-stats d-flex justify-content-center pt-0 pb-0">
+                <div>
+                  <span class="heading">{{count_books}}</span>
+                  <span class="description">Total de libros</span>
+                </div>
+                <div>
+                  <span class="heading">{{count_books}}</span>
+                  <span class="description">Total de copias</span>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+
+          
+          
+
+
+            
+          
+
+        </div>
+
+      </div>

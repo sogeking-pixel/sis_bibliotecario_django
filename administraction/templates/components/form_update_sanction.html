@@ -1,0 +1,43 @@
+{% extends "components/form_card.html"%}
+
+{% block form_data %} action="{% url "sanction.update" sanction.id %}" method="POST" {% endblock form_data%}
+
+{% block  body%}
+  <h6 class="heading-small text-muted mb-4">Informacion de la Sancion</h6>
+  <div class="pl-lg-4">
+    <div class="row">
+      <div class="col">
+        {% include "components/input_form.html" with form=form.name class="" %}
+      </div>
+      
+    </div>
+
+    <div class="row">
+      <div class="col">
+        {% include "components/input_form.html" with form=form.description class="" %}
+      </div>
+    </div>
+  </div>
+  <hr class="my-4" />
+
+  <h6 class="heading-small text-muted mb-4">Estadistica de la Sancion</h6>
+  <div class="row">
+    <div class="col">
+      <div class="card-profile-stats d-flex justify-content-center pt-0 pb-0">
+        <div>
+          <span class="heading">{{count_loands}}</span>
+          <span class="description">Total de Prestamos con sanciones</span>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <hr class="my-4" />
+  
+  <div class="col-4 ml-auto text-right">
+    <button type="submit" class="btn btn-primary mx-0" >
+      <i class="fas fa-edit"></i>
+      Actualizar
+    </button>
+  </div>
+{% endblock body %}

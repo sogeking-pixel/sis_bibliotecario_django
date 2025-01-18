@@ -1,0 +1,17 @@
+{% load custom_tags %}
+<li class="nav-item">
+  <a
+    class="nav-link {% if request.path|starts_with:url_name %}active text-white rounded" style="background: #5e72e4"{% else %}"{% endif %}"
+    href="{{ url_name}}"
+  >
+   
+    {% if request.path|starts_with:url_name %} 
+      <i class="text-white {{icon}} "></i>
+      <span class="nav-link-text">{{ url_text }}</span>
+    {%else%}
+      <i class="text-gray {{icon}}"></i>
+      <span class="nav-link-text"> {{ url_text }}</span>
+    {% endif %}
+   
+  </a>
+</li>

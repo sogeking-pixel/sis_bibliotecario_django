@@ -1,0 +1,27 @@
+ {% load static %}
+
+ <div class="card ">
+        <a href="{% url 'book.show' book.id%}" target="_blank">
+            <img src="{{ book.photo.url }}" alt="Image placeholder" class="card-img-top" style="max-height: 250px; object-fit: cover;" >
+        </a>
+       
+        
+        <div class="card-body ">
+          
+          <div class="text-center mt-3 mb-0 pb-0">
+            <a class="h2"  href="{% url 'book.show' book.id %}" target="_blank">
+              {{ book.title|title }}
+            </a>
+            <br>
+            <a class="h4 text-muted pb-3 mt-0" href="{% url 'author.show' book.author.id %}" target="_blank">
+              {{ book.author.first_name|title }} {{ book.author.last_name|title }}
+            </a>
+             <br>
+            <a class="h5 text-muted pb-3 mt-0"  href="{% url 'copy.show' copy.id %}" target="_blank">
+              {{ copy.code_internal }}
+            </a>
+          </div>
+
+        </div>
+
+      </div>

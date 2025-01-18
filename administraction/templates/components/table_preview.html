@@ -1,0 +1,48 @@
+<div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="mb-0">Prestamos Recientes</h3>
+            </div>
+            <div class="col text-right">
+              <a href="#tableuserexample" class="btn btn-sm btn-primary">Ver Todos</a>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <!-- Projects table -->
+          <table class="table align-items-center table-flush">
+
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Id_Prestamo</th>
+                <th scope="col">Nombre del libro</th>
+                <th scope="col">Fecha Prestamo</th>
+              </tr>
+            </thead>
+
+            <tbody>
+                {% if preview_loans %}
+                  {% for item in preview_loans %}
+                  <tr>
+                    <th scope="row">
+                    {{  item.code }}
+                    </th>
+                    <td>
+                    {{ item.copy }}
+                    </td>
+                    <td>
+                    {{ item.borrow_date }}
+                    </td>
+                  </tr> 
+                  {% endfor %}
+                {% else %}
+                <tr>
+                  <td colspan="3" class="text-center">No se realizó ningún préstamo</td>
+                </tr>
+                {% endif %}          
+              
+            </tbody>
+          </table>
+        </div>
+      </div>

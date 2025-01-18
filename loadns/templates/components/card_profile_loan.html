@@ -1,0 +1,31 @@
+ {% load static %}
+
+ <div class="card card-profile">
+        
+        <img src="/static/assets/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top" style="max-height: 150px; object-fit: cover;">
+
+        <div class="row justify-content-center ">
+          <div class="col-lg-3 order-lg-2">
+            <div class="card-profile-image w-100 mb-3">
+              <a href="{% url 'user.show' user.id%}" target="_blank">
+                <img src="{{ user.photo.url }} " class="rounded-circle" >
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-body mt-5 pt-4 ">
+          
+          <div class="text-center mt-3 mb-0 pb-0">
+            <a class="h2" href="{% url 'user.show' user.id%}" target="_blank">
+              {{ user.first_name|title }} {{ user.last_name|title }}
+            </a>
+            <h5 class="h4 text-muted  pb-3 mt-0">
+              {{ user.code_student }}
+            </h5>
+          </div>
+
+        </div>
+
+      </div>
