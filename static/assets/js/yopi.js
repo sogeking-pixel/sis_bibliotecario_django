@@ -928,7 +928,9 @@ var SalesChart = (function() {
 
     $chart.data('chart', salesChart);
 
-  };
+	};
+	
+
 
 
   // Events
@@ -938,7 +940,60 @@ var SalesChart = (function() {
   }
 
 })();
+function createLineTimeChart(chartId, labels, data) {
+  var $chart = $("#" + chartId);
 
+  function init($this) {
+    var salesChart = new Chart($this, {
+      type: "line",
+      options: {
+        scales: {
+          yAxes: [
+            {
+              gridLines: {
+                lineWidth: 1,
+                color: Charts.colors.gray[900],
+                zeroLineColor: Charts.colors.gray[900],
+              },
+              
+            },
+          ],
+        },
+        tooltips: {
+          callbacks: {
+            label: function (item, data) {
+              var label = data.datasets[item.datasetIndex].label || "";
+              var yLabel = item.yLabel;
+              var content = "";
+
+              if (data.datasets.length > 1) {
+                content += label;
+              }
+
+              content +=  yLabel;
+              return content;
+            },
+          },
+        },
+      },
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Performance",
+            data: data,
+          },
+        ],
+      },
+    });
+
+    $this.data("chart", salesChart);
+  }
+
+  if ($chart.length) {
+    init($chart);
+  }
+}
 //
 // Bootstrap Datepicker
 //
@@ -1111,7 +1166,7 @@ var BarStackedChart = (function () {
       datasets: [
         {
           label: "Retornado",
-          backgroundColor: Charts.colors.theme["danger"],
+          backgroundColor: Charts.colors.theme["success"],
           data: [
             randomScalingFactor(),
             randomScalingFactor(),
@@ -1137,7 +1192,7 @@ var BarStackedChart = (function () {
         },
         {
           label: "Atrasado",
-          backgroundColor: Charts.colors.theme["success"],
+          backgroundColor: Charts.colors.theme["danger"],
           data: [
             randomScalingFactor(),
             randomScalingFactor(),
@@ -1192,3 +1247,47 @@ var BarStackedChart = (function () {
     init($chart);
   }
 })();
+
+function createBarStackedChart(chartId, labels, datasets) {
+	var $chart = $("#" + chartId);
+	
+	
+	function init($this) {
+		var data = {
+			labels: labels,
+			datasets: datasets
+		};
+
+		var options = {
+			tooltips: {
+				mode: "index",
+				intersect: false,
+			},
+			responsive: true,
+			scales: {
+				xAxes: [
+					{
+						stacked: true,
+					},
+				],
+				yAxes: [
+					{
+						stacked: true,
+					},
+				],
+			},
+		};
+
+		var barStackedChart = new Chart($this, {
+			type: "bar",
+			data: data,
+			options: options,
+		});
+
+		$this.data("chart", barStackedChart);
+	}
+
+	if ($chart.length) {
+		init($chart);
+	}
+}

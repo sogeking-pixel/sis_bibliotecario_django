@@ -80,9 +80,38 @@ def loan_statistics():
 
 @admin_required
 def index(request):
+    
+    etiquetas = ['Enero', 'Febrero', 'Marzo', 'Abril']
+    datasets = [
+        {
+            'label': 'Dataset 1',
+            'data': [30, 40, 50, 60],
+            'backgroundColor': 'rgba(75, 192, 192, 0.5)',
+            
+        },
+        {
+            'label': 'Dataset 2',
+            'data': [20, 30, 40, 50],
+            'backgroundColor': 'rgba(153, 102, 255, 0.5)',
+            
+        }
+    ]
+
+    graphic = {
+        'labels': etiquetas,
+        'datasets': datasets,
+    }
+    
+    graphic_time = {
+        'labels' : ['Enero', 'Febrero', 'Marzo', 'Abril'],
+        'datasets' : [30, 10, 20, 30]
+    }
+    
     context = {
         'cards': return_cards(),
-        'graphic': loan_statistics()
+        'graphic': loan_statistics(),
+        'graphic_stack': graphic,
+        'graphic_line_time': graphic_time
     }
     return render(request, 'home/main.html', context)
 

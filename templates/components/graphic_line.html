@@ -10,8 +10,19 @@
   <div class="card-body">
     <!-- Chart -->
     <div class="chart">
-     <canvas id="chart-bar-stacked" class="chart-canvas"></canvas>
+     <canvas id="xddxdx" class="chart-canvas"></canvas>
     </div>
   </div>
 </div>
 
+<script none='abc123'>
+    document.addEventListener('DOMContentLoaded', function () {
+        const etiquetas = {{ graphic_stack.labels|safe }};
+        const conjuntos = {{ graphic_stack.datasets|safe }};
+        
+        console.log(etiquetas)
+        console.log(conjuntos)
+        // Llamar a la función de yopi.js
+        createBarStackedChart('xddxdx', etiquetas, conjuntos);
+    });
+</script>
