@@ -8,25 +8,22 @@
         <div class="col">
             <ul class="nav nav-pills justify-content-end">
             <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#nosexd" 
-            data-update='{"data":{"datasets":[{"data":[30, 10, 20, 30]}]}}' 
             data-prefix="" data-suffix="">
-                <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
+                <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab"  id="data_mes">
                 <span class="d-none d-md-block">Mes</span>
                 <span class="d-md-none">M</span>
                 </a>
             </li>
             <li class="nav-item" data-toggle="chart" data-target="#nosexd" 
-            data-update='{"data":{"datasets":[{"data":[0, 10, 20, 30]}]}}' 
             data-prefix="" data-suffix="">
-                <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
+                <a href="#" class="nav-link py-2 px-3" data-toggle="tab" id="data_semana">
                 <span class="d-none d-md-block">Semana</span>
                 <span class="d-md-none">W</span>
                 </a>
             </li>
             <li class="nav-item" data-toggle="chart" data-target="#nosexd" 
-            data-update='{"data":{"datasets":[{"data":[220, 10, 20, 30]}]}}' 
-            data-prefix="" data-suffix="">
-                <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
+            data-prefix="" data-suffix="" >
+                <a href="#" class="nav-link py-2 px-3" data-toggle="tab" id="data_dia">
                 <span class="d-none d-md-block">Dia</span>
                 <span class="d-md-none">W</span>
                 </a>
@@ -46,12 +43,29 @@
 
 <script none='abc123'>
     document.addEventListener('DOMContentLoaded', function () {
-        const etiquetas = {{ graphic_line_time.labels|safe }};
-        const conjuntos = {{ graphic_line_time.datasets|safe }};
+        const daily = {{ graphic_line_time.daily|safe }};
+        const weekly = {{ graphic_line_time.weekly|safe }};
+        const monthly = {{ graphic_line_time.monthly|safe }};
+
         
-        console.log(etiquetas)
-        console.log(conjuntos)
+
         // Llamar a la función de yopi.js
-        createLineTimeChart('nosexd', etiquetas, conjuntos);
+        createLineTimeChart('nosexd', monthly.labels, monthly.data);
+
+        // Evento de click en el botón de mes  
+        document.getElementById('data_mes').addEventListener('click', function (event) {
+            event.preventDefault();
+            createLineTimeChart('nosexd', monthly.labels, monthly.data);
+        });
+        document.getElementById('data_semana').addEventListener('click', function (event) {
+            event.preventDefault();
+            createLineTimeChart('nosexd', weekly.labels, weekly.data);
+        });
+        document.getElementById('data_dia').addEventListener('click', function (event) {
+            event.preventDefault();
+            createLineTimeChart('nosexd', daily.labels, daily.data);
+        });
+
+
     });
 </script>

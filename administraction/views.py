@@ -1,119 +1,14 @@
-from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 # from django.core.paginator import Paginator
 from .models import Student, Author, Sanction
 from loadns.models import Loan
-from books.models import Book, Copy
+from books.models import Book
 from .forms import StudentForm, AuthorForm, SanctionForm
 from books.forms import BookForm
 from loadns.forms import LoanForm
 from django.contrib import messages
-from django.conf import settings
 from utils.utils import admin_required
-from django.db.models import Count
-from django.http import JsonResponse
-from django.views.decorators.http import require_GET
-from django.db.models.functions import TruncMonth, TruncWeek
 
-
-def error_403(request, exception):
-    return render(request, 'home/page-403.html', status=403)
-
-def error_404(request, exception):
-    return render(request, 'home/page-404.html', status=404)
-
-def error_500(request):
-    return render(request, 'home/page-500.html', status=500)
-
-def return_cards():
-    now = datetime.now()
-    current_month = now.month
-    last_month = current_month - 1 or 12
-
-    total_loans = Loan.objects.count()
-    new_users = Student.objects.filter(create_at__month=current_month).count()
-    available_copies = Copy.objects.filter(availability_status=True).count()
-    pending_returns = Loan.objects.filter(return_date__isnull=True).count()
-
-    last_month_loans = Loan.objects.filter(created_date__month=last_month).count()
-    last_month_users = Student.objects.filter(create_at__month=last_month).count()
-    last_month_copies = Copy.objects.filter(availability_status=True, created_at__month=last_month).count()
-    last_month_returns = Loan.objects.filter(return_date__isnull=True, created_date__month=last_month).count()
-
-    def calculate_percentage(current, previous):
-        return ((current - previous) / previous * 100) if previous else 0
-
-    card_data = [
-        ('Prestamos Totales', total_loans, last_month_loans),
-        ('Nuevos Usuarios', new_users, last_month_users),
-        ('Copias Disponibles', available_copies, last_month_copies),
-        ('Devoluciones Pendientes', pending_returns, last_month_returns)
-    ]
-
-    cards = [
-        {
-            'title': title,
-            'num': current,
-            'porcent': calculate_percentage(current, previous),
-            'subtitle_range': 'Since last month'
-        }
-        for title, current, previous in card_data
-    ]
-
-    return cards
-
-def loan_statistics():
-    # Loans per month
-    loans_per_month = Loan.objects.annotate(month=TruncMonth('created_date')).values('month').annotate(count=Count('id')).order_by('month')
-    monthly_data = {entry['month'].strftime('%Y-%m'): entry['count'] for entry in loans_per_month}
-
-    # Loans per week
-    loans_per_week = Loan.objects.annotate(week=TruncWeek('created_date')).values('week').annotate(count=Count('id')).order_by('week')
-    weekly_data = {entry['week'].strftime('%Y-%W'): entry['count'] for entry in loans_per_week}
-
-    data = {
-        'monthly': monthly_data,
-        'weekly': weekly_data
-    }
-    
-    return data
-
-@admin_required
-def index(request):
-    
-    etiquetas = ['Enero', 'Febrero', 'Marzo', 'Abril']
-    datasets = [
-        {
-            'label': 'Dataset 1',
-            'data': [30, 40, 50, 60],
-            'backgroundColor': 'rgba(75, 192, 192, 0.5)',
-            
-        },
-        {
-            'label': 'Dataset 2',
-            'data': [20, 30, 40, 50],
-            'backgroundColor': 'rgba(153, 102, 255, 0.5)',
-            
-        }
-    ]
-
-    graphic = {
-        'labels': etiquetas,
-        'datasets': datasets,
-    }
-    
-    graphic_time = {
-        'labels' : ['Enero', 'Febrero', 'Marzo', 'Abril'],
-        'datasets' : [30, 10, 20, 30]
-    }
-    
-    context = {
-        'cards': return_cards(),
-        'graphic': loan_statistics(),
-        'graphic_stack': graphic,
-        'graphic_line_time': graphic_time
-    }
-    return render(request, 'home/main.html', context)
 
 
 @admin_required
@@ -453,21 +348,4 @@ def sanction_update(request, id):
     else:
         messages.error(request, f"Error al actualizar la sanción: {form.errors}")
     return redirect('sanction.show', id=id)
-
-
-
-# def icon(request):
-#     return render(request,'home/icons.html')
-
-# def map(request):
-#     return render(request, 'home/map.html')
-
-# def profile(request):
-#     return render(request,'home/profile.html')
-
-# def register_home(request):
-#     return render(request,'home/profile.html')
-
-# def table(request):
-#     return render(request,'home/table.html')
 

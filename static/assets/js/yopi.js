@@ -941,57 +941,60 @@ var SalesChart = (function() {
 
 })();
 function createLineTimeChart(chartId, labels, data) {
-  var $chart = $("#" + chartId);
-
+	var $chart = $("#" + chartId);
+	
   function init($this) {
-    var salesChart = new Chart($this, {
-      type: "line",
-      options: {
-        scales: {
-          yAxes: [
-            {
-              gridLines: {
-                lineWidth: 1,
-                color: Charts.colors.gray[900],
-                zeroLineColor: Charts.colors.gray[900],
-              },
-              
-            },
-          ],
-        },
-        tooltips: {
-          callbacks: {
-            label: function (item, data) {
-              var label = data.datasets[item.datasetIndex].label || "";
-              var yLabel = item.yLabel;
-              var content = "";
+	var salesChart = new Chart($this, {
+	  type: "line",
+	  options: {
+		scales: {
+		  yAxes: [
+			{
+			  gridLines: {
+				lineWidth: 1,
+				color: Charts.colors.gray[900],
+				zeroLineColor: Charts.colors.gray[900],
+			  },
+			  
+			},
+		  ],
+		},
+		tooltips: {
+		  callbacks: {
+			label: function (item, data) {
+			  var label = data.datasets[item.datasetIndex].label || "";
+			  var yLabel = item.yLabel;
+			  var content = "";
 
-              if (data.datasets.length > 1) {
-                content += label;
-              }
+			  if (data.datasets.length > 1) {
+				content += label;
+			  }
 
-              content +=  yLabel;
-              return content;
-            },
-          },
-        },
-      },
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: "Performance",
-            data: data,
-          },
-        ],
-      },
-    });
+			  content +=  yLabel;
+			  return content;
+			},
+		  },
+		},
+	  },
+	  data: {
+		labels: labels,
+		datasets: [
+		  {
+			label: "Performance",
+			data: data,
+		  },
+		],
+	  },
+	});
 
-    $this.data("chart", salesChart);
+	$this.data("chart", salesChart);
   }
 
   if ($chart.length) {
-    init($chart);
+	if ($chart.data("chart")) {
+	  $chart.data("chart").destroy();
+	}
+	init($chart);
   }
 }
 //

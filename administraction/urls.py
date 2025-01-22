@@ -32,10 +32,7 @@ sanction_patterns = [
 
 
 urlpatterns = [
-    
-    path('dashboard/', views.index,name="index"),
     path('user/', include(user_patterns)),
     path('autor/', include(author_patterns)),
-    path('sanciones/', include(sanction_patterns)),
-        
+    path('sanciones/', include(sanction_patterns)),    
 ]

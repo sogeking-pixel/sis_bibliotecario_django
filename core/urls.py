@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('administraction.urls')),
     path('', include('books.urls')),
     path('', include('loadns.urls')),
+    path('', include('dashboard.urls')),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', lambda request: redirect('index', permanent=True)),
 ]
@@ -34,9 +35,9 @@ urlpatterns = [
 from django.conf.urls import handler403, handler404, handler500
 
 # Registrar las páginas de error
-handler403 = 'administraction.views.error_403'
-handler404 = 'administraction.views.error_404'
-handler500 = 'administraction.views.error_500'
+handler403 = 'dashboard.views.error_403'
+handler404 = 'dashboard.views.error_404'
+handler500 = 'dashboard.views.error_500'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
