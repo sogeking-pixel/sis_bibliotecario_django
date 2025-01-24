@@ -18,13 +18,19 @@
                 {% endfor %}
 
                 <td>
+                     
                     {% if not item.return_date %}
                         <span class="badge bg-yellow font-weight-bold  text-dark "><b>Pendiente</b></span>
-                    {% elif item.return_date|date:"Y-m-d" > item.due_date|date:"Y-m-d" %}
-                        <span class="badge bg-danger text-white font-weight-bold">Atrasado</span>
                     {% else %}
                         <span class="badge bg-success font-weight-bold text-dark"><b>Retornado</b></span>
                     {% endif %}
+
+                    {% if item.return_date|date:"Y-m-d" > item.due_date|date:"Y-m-d" %}
+                        <span class="badge bg-danger text-white font-weight-bold">Atrasado</span>
+                    
+                    {% endif %}
+                   
+                    
                 </td>
 
 
@@ -69,6 +75,6 @@
     
 {% include 'components/modal_delete.html' with title_modal='Confirmar Eliminación' modal_id='deleteModal' %}
   
- {% if accions.return %}
+{% if accions.return %}
     {% include 'components/modal_return.html' with title_modal='Retornar Libro' modal_id='returnModal' form=form_return %}
 {% endif %}

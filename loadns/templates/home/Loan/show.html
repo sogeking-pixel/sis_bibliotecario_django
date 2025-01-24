@@ -13,7 +13,9 @@
 <div class="header bg-primary pb-6 zsd">
   <div class="container-fluid">
     <div class="header-body">
+      
       <div class="row align-items-center py-4">
+        
         <div class="col-lg-6 col-7">
           <h6 class="h2 text-white d-inline-block mb-0">Datos de {{loan.code}}</h6>
           <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
@@ -25,6 +27,10 @@
               <li class="breadcrumb-item active" aria-current="page">prestamo</li>
             </ol>
           </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+          <button  id="button_return" class="  btn btn-success btn-icon  return-button p-0 px-3 py-2" title="Retornar Prestamo" data-return-url="{% url 'loan.return' loan.id %}" {%if loan.return_date %} disabled  {% endif %}><i class="fas fa-undo" ></i> Retornar</button>
+        
         </div>
       </div>
     </div>
@@ -49,7 +55,6 @@
     </div>
 
     
-    
           
   </div>
 
@@ -58,7 +63,20 @@
 </div>
 
 {% block javascripts %}
+  <script>
+        document.addEventListener('DOMContentLoaded', () => {
+         
+          const returnButton = document.getElementById('button_return');
+          const returnForm = document.getElementById('returnForm');
 
+          returnButton.addEventListener('click', () => {
+            returnUrl = $(this).data('return-url');
+            const modal_return = new bootstrap.Modal(document.getElementById('returnModal'));
+            modal_return.show();
+          });
+        });
+
+</script>
 {% endblock javascripts %}
 
 {% endblock content %}
