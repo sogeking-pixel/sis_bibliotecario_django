@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from administraction.models import Student, Author, Sanction
 from .models import Loan
@@ -44,7 +45,8 @@ def loan_main(request):
     context = {
         'table': table,
         'form': LoanForm(),
-        'form_return': LoanReturnForm()
+        'form_return': LoanReturnForm(),
+        'today': datetime.now()
     }
         
     return render(request, 'home/Loan/main.html', context)        

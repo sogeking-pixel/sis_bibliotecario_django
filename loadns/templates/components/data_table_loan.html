@@ -16,20 +16,25 @@
                     <td>{{ item|get_item:field }}</td>
                     
                 {% endfor %}
-
                 <td>
                      
                     {% if not item.return_date %}
-                        <span class="badge bg-yellow font-weight-bold  text-dark "><b>Pendiente</b></span>
+                        {% if item.due_date|date:"Y-m-d" < today|date:"Y-m-d" %}
+                            <span class="badge bg-yellow text-dark font-weight-bold"> <b> Atrasado </b></span>
+                        {% else %}
+                            <span class="badge bg-primary text-white font-weight-bold"> <b> Activo </b></span>
+                        {% endif %}
+                        {% comment %} <span class="badge bg-blue font-weight-bold  text-dark "><b>Activo</b></span> {% endcomment %}
                     {% else %}
-                        <span class="badge bg-success font-weight-bold text-dark"><b>Retornado</b></span>
+                        {% if item.return_date|date:"Y-m-d" > item.due_date|date:"Y-m-d" %}
+                            <span class="badge bg-danger text-white font-weight-bold"> <b> Devuelto tarde </b></span>
+                        {% else %}
+                            <span class="badge bg-success text-dark font-weight-bold"> <b> Devuelto </b></span>
+                        {% endif %}
+                        
                     {% endif %}
 
-                    {% if item.return_date|date:"Y-m-d" > item.due_date|date:"Y-m-d" %}
-                        <span class="badge bg-danger text-white font-weight-bold">Atrasado</span>
                     
-                    {% endif %}
-                   
                     
                 </td>
 
