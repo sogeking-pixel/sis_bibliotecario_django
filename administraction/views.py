@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 # from django.core.paginator import Paginator
 from .models import Student, Author, Sanction
@@ -110,6 +111,7 @@ def user_show(request, id):
         'count_loans': loans.count(),
         'total_returns': loans.filter(return_date__isnull=False).count(),
         'total_sanctions': total_sanctions,
+        'today': datetime.now()
     }
     return render(request, 'home/User/show.html', context)
     

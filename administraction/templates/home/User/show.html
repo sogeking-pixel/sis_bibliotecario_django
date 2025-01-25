@@ -74,16 +74,30 @@
 {% block javascripts %}
 
   {% include "includes/scripts_data_table.html" %}
-  <script>  
-    
-     $(document).ready(function () {
-      if (!$.fn.DataTable.isDataTable('#tableUserexample')) {
-          $('#tableUserexample').DataTable({
-              scrollX: true
-          });
-      }
-  });
-  </script>
+
+
+  <script>
+    $(document).ready(function () {
+        if (!$.fn.DataTable.isDataTable('#tableUserexample')) {
+            $('#tableUserexample').DataTable({
+                scrollX: true,
+                "order": [[2, "desc"]],
+                columnDefs: [
+                    {
+                        targets: 2,
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return moment(data).format('D [ - ] MMMM [, ] YYYY, h:mm a');
+                            }
+                            return data;
+                        }
+                    }
+                ]
+            });
+        }
+    });
+</script>
+
 
   <script>
         document.addEventListener('DOMContentLoaded', () => {

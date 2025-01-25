@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Book, Copy
@@ -220,6 +221,7 @@ def copy_show(request, id):
         'loan_form': loan_form,
         'table': table,
         'count_loands': loans.count(),
+        'today': datetime.now()
     }
     
 

@@ -10,8 +10,10 @@ from django.db.models import Count
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from django.db.models.functions import TruncMonth, TruncWeek, TruncDay
-from django.db.models import Q
+from django.db.models import Q, F
 from datetime import timedelta
+from django.db.models.functions import TruncDate
+
 
 # Create your views here.
 def error_403(request, exception):
@@ -89,7 +91,7 @@ def get_last_n_months_labels(n):
 def get_monthly_counts(loans, months_back, filter_conditions):
     now = datetime.now()
     return [
-        loans.filter(
+        loans.annotate(return_date_trunc=TruncDate('return_date')).filter(
             created_date__month=(now - timedelta(days=i * 30)).month,
             **filter_conditions
         ).count()
@@ -106,20 +108,28 @@ def loan_time_stack():
 
     labels = get_last_n_months_labels(n=number_of_months)
 
+    
+    
     datasets = [
         {
-            'label': 'Pendiente',
-            'data': get_monthly_counts(loans, number_of_months, {'return_date__isnull': True}),
-            'backgroundColor': 'rgba(255, 206, 86, 0.5)',
-        },
-        {
-            'label': 'Retornado',
-            'data': get_monthly_counts(loans, number_of_months, {'return_date__isnull': False}),
-            'backgroundColor': 'rgba(75, 192, 192, 0.5)',
+            'label': 'Activo',
+            'data': get_monthly_counts(loans, number_of_months, {'return_date__isnull': True, 'due_date__gte': now.date()}),
+            'backgroundColor': 'rgba(153, 102, 255, 0.5)',
         },
         {
             'label': 'Atrasado',
-            'data': get_monthly_counts(loans, number_of_months, {'due_date__lt': now, 'return_date__isnull': True}),
+            'data': get_monthly_counts(loans, number_of_months, {'due_date__lt': now.date(), 'return_date__isnull': True}),
+            'backgroundColor': 'rgba(255, 206, 86, 0.5)',
+        },
+        {
+            'label': 'Devuelto a Tiempo',
+            'data': get_monthly_counts(loans, number_of_months, {'return_date__isnull': False, 'due_date__gte': F('return_date_trunc')}),
+            'backgroundColor': 'rgba(75, 192, 192, 0.5)',
+        },
+        
+        {
+            'label': 'Devuelto Atrasado',
+            'data': get_monthly_counts(loans, number_of_months, {'return_date__isnull': False,'due_date__lt': F('return_date_trunc') }),
             'backgroundColor': 'rgba(255, 99, 132, 0.5)',
         }
     ]
