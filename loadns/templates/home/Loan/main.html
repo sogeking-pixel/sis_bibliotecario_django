@@ -72,17 +72,42 @@
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
 
+
   {% include "includes/scripts_data_table.html" %}
-  <script>  
-    
-     $(document).ready(function () {
-      if (!$.fn.DataTable.isDataTable('#tableLoanExample')) {
-          $('#tableLoanExample').DataTable({
-              scrollX: true
-          });
-      }
-  });
-  </script>
+  
+
+<script>
+    $(document).ready(function () {
+        if (!$.fn.DataTable.isDataTable('#tableLoanExample')) {
+            $('#tableLoanExample').DataTable({
+                scrollX: true,
+                "order": [[3, "desc"]],
+                columnDefs: [
+                    {
+                        targets: 3,
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return moment(data).format('D [ - ] MMMM [, ] YYYY, h:mm a');
+                            }
+                            return data;
+                        }
+                    },
+
+                      {
+                        targets: 4,
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return moment(data).format('D [ - ] MMMM [, ] YYYY');
+                            }
+                            return data;
+                        }
+                    }
+                ]
+            });
+        }
+    });
+</script>
+
 
   <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -105,7 +130,7 @@
             modal_return.show();
           });
         });
-
+ 
 </script>
 
  

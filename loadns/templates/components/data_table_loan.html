@@ -13,7 +13,13 @@
             {% for item in data  %}
              <tr>
                 {% for field in fields  %}
-                    <td>{{ item|get_item:field }}</td>
+                    {% if field == 'due_date' %}
+                        <td>{{ item|get_item:field|date:"Y-m-d" }}</td>
+                    {% elif field == 'created_date' %}
+                        <td>{{ item|get_item:field|date:"Y-m-d H:i:s" }}</td>
+                    {% else %}
+                        <td>{{ item|get_item:field }}</td>
+                    {% endif %}
                     
                 {% endfor %}
                 <td>
@@ -24,7 +30,6 @@
                         {% else %}
                             <span class="badge bg-primary text-white font-weight-bold"> <b> Activo </b></span>
                         {% endif %}
-                        {% comment %} <span class="badge bg-blue font-weight-bold  text-dark "><b>Activo</b></span> {% endcomment %}
                     {% else %}
                         {% if item.return_date|date:"Y-m-d" > item.due_date|date:"Y-m-d" %}
                             <span class="badge bg-danger text-white font-weight-bold"> <b> Devuelto tarde </b></span>
