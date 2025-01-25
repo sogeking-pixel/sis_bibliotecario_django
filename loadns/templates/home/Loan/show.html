@@ -40,6 +40,22 @@
 
 <!-- Page content -->
 <div class="container-fluid mt--6">
+   <div class="position-relative right-0 mb-2 ml-4">
+   {% if not loan.return_date %}
+        {% if loan.due_date|date:"Y-m-d" < today|date:"Y-m-d" %}
+            <span class="badge bg-yellow text-dark text-sm px-3"> <b> Atrasado </b></span>
+        {% else %}
+            <span class="badge bg-dark text-white text-sm px-3"> <b> Activo </b></span>
+        {% endif %}
+    {% else %}
+        {% if loan.return_date|date:"Y-m-d" > loan.due_date|date:"Y-m-d" %}
+            <span class="badge bg-danger text-white text-sm px-3"> <b> Devuelto tarde </b></span>
+        {% else %}
+            <span class="badge bg-success text-dark text-sm px-3"> <b> Devuelto </b></span>
+        {% endif %}
+        
+    {% endif %}
+  </div>
   <div class="row mx-2">
     <div class="col-xl-4 col-lg-5 col-md-6 order-xl-2 order-lg-2 order-md-2">
       

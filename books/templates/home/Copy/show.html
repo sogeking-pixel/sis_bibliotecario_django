@@ -37,7 +37,16 @@
 
 <!-- Page content -->
 <div class="container-fluid mt--6">
+   <div class="position-relative right-0 mb-2 ml-4">
+    {% if copy.availability_status %}
+      <span class="badge bg-success text-sm px-3"><b>Disponible</b></span>
+    {% else %}
+      <span class="badge bg-yellow text-sm px-3"><b>En prestamo</b></span>
+    {% endif %}
+  </div>
+  
   <div class="row mx-2">
+    
     <div class="col-lg-3 col-sm-5 order-sm-2">
       
       {% include 'components/card_copy.html' with book=copy.book%}
@@ -47,6 +56,8 @@
     </div>
 
     <div class="col-lg-9 col-sm-7  order-sm-1">
+     
+      
        {% include 'components/form_update_copy.html' with form_title='Editar Copia' %}
     </div>
 
