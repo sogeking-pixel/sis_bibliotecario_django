@@ -146,7 +146,8 @@ def loan_show(request, id):
     context = {
         'loan': loan,
         'form': form,
-        'today': datetime.now()
+        'today': datetime.now(),
+        'form_return': LoanReturnForm(),
     }
     return render(request, 'home/Loan/show.html', context)   
     

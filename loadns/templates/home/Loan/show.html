@@ -29,7 +29,7 @@
           </nav>
         </div>
         <div class="col-lg-6 col-5 text-right">
-          <button  id="button_return" class="  btn btn-success btn-icon  return-button p-0 px-3 py-2" title="Retornar Prestamo" data-return-url="{% url 'loan.return' loan.id %}" {%if loan.return_date %} disabled  {% endif %}><i class="fas fa-undo" ></i> Retornar</button>
+          <button  id="button_return" class=" btn btn-success btn-icon  return-button p-0 px-3 py-2" title="Retornar Prestamo" data-return-url="{% url 'loan.return' loan.id %}" {% if loan.return_date %} disabled  {% endif %}><i class="fas fa-undo" ></i> Retornar</button>
         
         </div>
       </div>
@@ -37,7 +37,7 @@
   </div>
 </div>
 
-
+{% include 'components/modal_return.html' with title_modal='Retornar Libro' modal_id='returnModal' form=form_return %}
 <!-- Page content -->
 <div class="container-fluid mt--6">
    <div class="position-relative right-0 mb-2 ml-4">
@@ -70,7 +70,7 @@
         {% include 'components/form_update_loan.html' with form_title='Editar Prestamos' %}
     </div>
 
-    
+     
           
   </div>
 
