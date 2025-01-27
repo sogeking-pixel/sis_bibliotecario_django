@@ -86,8 +86,9 @@
           const returnForm = document.getElementById('returnForm');
 
           returnButton.addEventListener('click', () => {
-            returnUrl = $(this).data('return-url');
+            const returnUrl = returnButton.dataset.returnUrl;
             const modal_return = new bootstrap.Modal(document.getElementById('returnModal'));
+            returnForm.action = returnUrl;
             modal_return.show();
           });
         });
