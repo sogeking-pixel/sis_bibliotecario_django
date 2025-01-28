@@ -111,26 +111,32 @@
 
   <script>
         document.addEventListener('DOMContentLoaded', () => {
-          const deleteButtons = document.querySelectorAll('.btn-delete');
           const deleteForm = document.getElementById('deleteForm');
-          const returnButtons = document.querySelectorAll('.return-button');
           const returnForm = document.getElementById('returnForm');
 
           $('#tableLoanExample tbody').on('click', '.delete-button', function () {
-              deleteUrl = $(this).data('delete-url');
+              const deleteUrl = $(this).data('delete-url');
               const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-              deleteForm.action = deleteUrl
+              deleteForm.action = deleteUrl;
               modal.show();
           });
 
           $('#tableLoanExample tbody').on('click', '.return-button', function () {
-            returnUrl = $(this).data('return-url');
+            const returnUrl = $(this).data('return-url');
             const modal_return = new bootstrap.Modal(document.getElementById('returnModal'));
-            returnForm.action = returnUrl
+            returnForm.action = returnUrl;
+            showData($(this));
             modal_return.show();
           });
         });
- 
+        
+        function showData(element){
+          document.getElementById('LoanCode').value = element.data('loan-code');
+          document.getElementById('CopyCode').value = element.data('loan-copy');
+          document.getElementById('LoanStudent').value = element.data('loan-student');
+          document.getElementById('LoanCreateDate').value = element.data('loan-created-date');
+          document.getElementById('LoanDueDate').value = element.data('loan-due-date');
+        }
 </script>
 
  

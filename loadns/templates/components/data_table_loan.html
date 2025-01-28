@@ -52,7 +52,7 @@
                     {% endif %}
 
                     {% if accions.return %}
-                    <button class="btn btn-success return-button btn-sm p-0 px-3 py-2" title="Retornar Prestamo" data-return-url="{% url accions.return item.id %}" {%if item.return_date %} disabled   {% endif %}><i class="fas fa-undo" ></i></button>
+                    <button class="btn btn-success return-button btn-sm p-0 px-3 py-2" title="Retornar Prestamo" data-loan-code="{{ item.code }}" data-loan-student="{{ item.student }}" data-loan-copy="{{ item.copy }}" data-loan-created-date="{{item.created_date|date:"Y-m-d"}}" data-loan-due-date="{{ item.due_date|date:"Y-m-d" }}" data-return-url="{% url accions.return item.id %}" {%if item.return_date %} disabled   {% endif %}><i class="fas fa-undo" ></i></button>
                     {% endif %}
 
                     {% if accions.update %}

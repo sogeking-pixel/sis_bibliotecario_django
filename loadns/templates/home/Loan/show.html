@@ -29,7 +29,7 @@
           </nav>
         </div>
         <div class="col-lg-6 col-5 text-right">
-          <button  id="button_return" class=" btn btn-success btn-icon  return-button p-0 px-3 py-2" title="Retornar Prestamo" data-return-url="{% url 'loan.return' loan.id %}" {% if loan.return_date %} disabled  {% endif %}><i class="fas fa-undo" ></i> Retornar</button>
+          <button  id="button_return" class=" btn btn-success btn-icon  return-button p-0 px-3 py-2" title="Retornar Prestamo"  data-loan-code="{{ loan.code }}" data-loan-student="{{ loan.student }}" data-loan-copy="{{ loan.copy }}" data-loan-created-date="{{loan.created_date|date:"Y-m-d"}}" data-loan-book="{{loan.copy}}" data-loan-due-date="{{ loan.due_date|date:"Y-m-d" }}" data-return-url="{% url 'loan.return' loan.id %}" {% if loan.return_date %} disabled  {% endif %}><i class="fas fa-undo" ></i> Retornar</button>
         
         </div>
       </div>
@@ -89,10 +89,18 @@
             const returnUrl = returnButton.dataset.returnUrl;
             const modal_return = new bootstrap.Modal(document.getElementById('returnModal'));
             returnForm.action = returnUrl;
+            showData(returnButton);
             modal_return.show();
           });
         });
-
+        
+        function showData(element){
+          document.getElementById('LoanCode').value = element.getAttribute('data-loan-code');
+          document.getElementById('CopyCode').value = element.getAttribute('data-loan-copy');
+          document.getElementById('LoanStudent').value = element.getAttribute('data-loan-student');
+          document.getElementById('LoanCreateDate').value = element.getAttribute('data-loan-created-date');
+          document.getElementById('LoanDueDate').value = element.getAttribute('data-loan-due-date');
+        }
 </script>
 {% endblock javascripts %}
 
