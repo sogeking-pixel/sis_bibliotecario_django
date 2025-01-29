@@ -1,16 +1,16 @@
 from django.db import models
 from administraction.models import Author
 from utils.utils import compress_img, delete_img
-
+from datetime import date
 # Create your models here.
 
 
 class Book(models.Model):
     title = models.CharField( max_length=255)
     abstract = models.TextField()
-    photo =  models.ImageField( upload_to='imagenes/Author/', height_field=None, width_field=None, max_length=None)
+    photo =  models.ImageField( upload_to='imagenes/Book/', height_field=None, width_field=None, max_length=None, blank=True, null=True, default='imagenes/Book/default.jpg')
     isbm = models.CharField( max_length=15, unique=True)
-    num_page = models.IntegerField()
+    num_page = models.PositiveIntegerField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     publication_date = models.DateField(auto_now=False, auto_now_add=False)
     
@@ -27,6 +27,8 @@ class Book(models.Model):
     def __str__(self):
        return f"{self.title} -- {self.author.first_name} {self.author.last_name}"
     
+    def is_recent_publication(self):
+        return date.today().year - self.publication_date.year <= 1
     
     
 class Copy(models.Model):
@@ -38,3 +40,4 @@ class Copy(models.Model):
     created_at = models.DateTimeField( auto_now=True, auto_now_add=False)
     def __str__(self):
        return f"{self.book.title} -- {self.code_internal}"
+   

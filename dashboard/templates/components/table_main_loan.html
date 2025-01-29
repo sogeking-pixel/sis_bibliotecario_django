@@ -1,0 +1,70 @@
+{% load custom_tags %}
+<div class="card">
+    <div class="card-header border-0">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="mb-0">{{ table.title }}</h3>
+            </div>
+            <div class="col text-right">
+                <a href="{% url link_url %}" class="btn btn-sm btn-primary">{{ link_text }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <!-- Projects table -->
+        <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+                <tr>
+                    {% for header in table.headers  %}
+                        <th scope="col">{{header}}</th>
+                    {% endfor %}
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for item in table.data  %}
+                <tr scope="row">
+                    {% for field in table.fields  %}
+
+                        <td>{{ item|get_item:field }}</td>
+                        
+                    {% endfor %}
+
+                    <td>
+                     
+                        {% if not item.is_returned %}
+                            {% if  item.is_pending %}
+                                <span class="badge bg-yellow text-dark font-weight-bold"> <b> Atrasado </b></span>
+                            {% else %}
+                                <span class="badge bg-primary text-white font-weight-bold"> <b> Activo </b></span>
+                            {% endif %}
+                        {% else %}
+                            {% if item.is_late_return %}
+                                <span class="badge bg-danger text-white font-weight-bold"> <b> Devuelto tarde </b></span>
+                            {% else %}
+                                <span class="badge bg-success text-dark font-weight-bold"> <b> Devuelto </b></span>
+                            {% endif %}
+                            
+                        {% endif %}
+                    
+                    </td>
+
+                    <td>
+                        {% if table.accions.show %}
+                            <a data-bs-toggle="modal" data-bs-target="#showData-1" title="Ver detalles"  class="btn btn-default btn-sm p-0 px-3 py-2" href="{%url table.accions.show item.id %}"><i class="fas fa-eye"></i></a>
+                        {% endif %}
+                    </td>
+
+                    
+                </tr>
+                {% endfor %}
+
+
+                
+                    
+            </tbody>
+        </table>
+    </div>
+</div>

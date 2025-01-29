@@ -24,26 +24,22 @@
                 {% endfor %}
                 <td>
                      
-                    {% if not item.return_date %}
-                        {% if item.due_date|date:"Y-m-d" < today|date:"Y-m-d" %}
+                    {% if not item.is_returned %}
+                        {% if  item.is_pending %}
                             <span class="badge bg-yellow text-dark font-weight-bold"> <b> Atrasado </b></span>
                         {% else %}
                             <span class="badge bg-primary text-white font-weight-bold"> <b> Activo </b></span>
                         {% endif %}
                     {% else %}
-                        {% if item.return_date|date:"Y-m-d" > item.due_date|date:"Y-m-d" %}
+                        {% if item.is_late_return %}
                             <span class="badge bg-danger text-white font-weight-bold"> <b> Devuelto tarde </b></span>
                         {% else %}
                             <span class="badge bg-success text-dark font-weight-bold"> <b> Devuelto </b></span>
                         {% endif %}
                         
                     {% endif %}
-
-                    
                     
                 </td>
-
-
 
                 <td>
                     

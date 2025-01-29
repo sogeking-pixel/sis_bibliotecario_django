@@ -36,15 +36,45 @@ def index(request):
     graphic = loan_time_stack() 
     
     graphic_time = loan_time_line()
-   
+    
+    table_last_loans = get_last_loans()
+    
+    table_loan_not_returned = get_loan_not_returned()
+    
     context = {
         'cards': cards,
         'graphic_stack': graphic,
-        'graphic_line_time': graphic_time
+        'graphic_line_time': graphic_time,
+        'table_last_loans':table_last_loans,
+        'table_loan_not_returned':table_loan_not_returned
     }
     return render(request, 'home/main.html', context)
 
+def get_last_loans():
+    loans = Loan.objects.all().order_by('-created_date')[:5]
+    table = {
+        'title': 'Prestamos Recientes',
+        'headers': ['Codigo de Prestamo','Copia', 'Estudiante', 'Fecha de Prestamo', 'Fecha de Devolucion'],
+        'fields': ['code', 'copy', 'student', 'created_date','due_date'],
+        'data': loans,
+        'accions': {
+            'show': 'loan.show',
+        },
+    }
+    return table
 
+def get_loan_not_returned():
+    loans = Loan.objects.filter(return_date__isnull=True).order_by('-created_date')[:5]
+    table = {
+        'title': 'Prestamos sin Devolver',
+        'headers': ['Codigo de Prestamo',],
+        'fields': ['code',],
+        'data': loans,
+        'accions': {
+            'show': 'loan.show',
+        },
+    }
+    return table
 
 def return_cards():
     now = datetime.now()
@@ -220,3 +250,5 @@ def loan_time_line():
             'data': monthly_data
         }
     }
+
+
