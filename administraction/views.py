@@ -188,7 +188,7 @@ def author_create(request):
 def author_delete(request, id):
     if request.method != 'POST':
         return
-    author = get_object_or_404(Author, id=id)   
+    author = get_object_or_404(Author, id=id)    
     author.delete()
     messages.info(request, "Autor eliminado exitosamente")
     return redirect(request.META.get('HTTP_REFERER', 'author.index'))    

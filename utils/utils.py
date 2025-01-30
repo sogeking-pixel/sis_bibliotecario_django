@@ -7,6 +7,10 @@ from django.conf import settings
 import qrcode
 from django.core.files import File
 from django.contrib.auth.decorators import login_required, user_passes_test
+from cloudinary.uploader import destroy
+# Eliminar la imagen si existe
+       
+        
 
 def compress_img(photo, quality = 60):
     image = Image.open(photo)
@@ -17,9 +21,7 @@ def compress_img(photo, quality = 60):
     return ContentFile(image_io.getvalue(), name=new_filename)
 
 def delete_img(photo):
-    photo_path = os.path.join(settings.MEDIA_ROOT, photo.name)
-    if os.path.exists(photo_path):
-        os.remove(photo_path)
+    destroy(photo.public_id)
 
 def generate_qr(code):
     qr = qrcode.QRCode(

@@ -4,6 +4,7 @@ from django.utils import timezone
 from utils.utils import compress_img, delete_img
 from datetime import date
 from django.core.exceptions import ValidationError
+from cloudinary.models import CloudinaryField
 
 
 
@@ -55,16 +56,12 @@ class Author(models.Model):
     first_name =  models.CharField( max_length=50)
     last_name = models.CharField( max_length=50)
     nacionality =  models.CharField( max_length=50)
-    photo =  models.ImageField( upload_to='imagenes/Authors/', height_field=None, width_field=None, max_length=None)
-    
-    def save(self,*args, **kwargs):
-        self.photo = compress_img(self.photo)       
-        super().save(*args, **kwargs)
+    photo =  CloudinaryField('imagenes/Authors/')
     
     def delete(self,*args, **kwargs):
         if self.photo:
             delete_img(self.photo)
-        super().delete(self,*args, **kwargs)
+        super().delete(*args, **kwargs)
     
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
