@@ -1,6 +1,5 @@
 from django import forms
 from .models import Student, Author, Sanction
-from  cloudinary.forms import CloudinaryFileField
 
 class StudentForm(forms.ModelForm):
     class Meta:
@@ -52,7 +51,6 @@ class StudentForm(forms.ModelForm):
         }
         
 class AuthorForm(forms.ModelForm):
-    photo = CloudinaryFileField()
     class Meta:
         model = Author
         fields = ['first_name', 'last_name', 'nacionality', 'photo']

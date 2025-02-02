@@ -2,16 +2,17 @@ from django.db import models
 from administraction.models import Student, Sanction
 from books.models import Copy
 from django.contrib.auth.models import User
-from utils.utils import generate_qr, generate_code
+from utils.utils import generate_qr, generate_code, compress_img
 from datetime import date
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-
+from cloudinary.models import CloudinaryField
 # Create your models here.
+
 class Loan(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     code = models.CharField(max_length=12, unique=True, null=True)
-    qr_code = models.ImageField(upload_to='qr_codes', null=True, blank=True)
+    qr_code = CloudinaryField()
     copy = models.ForeignKey(Copy, on_delete=models.CASCADE)
     created_by_admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='loans_created')
     received_by_admin = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='loans_received')
@@ -44,9 +45,13 @@ class Loan(models.Model):
     @property
     def is_late_return(self):
         return self.is_returned and self.return_date.date() > self.due_date
+    
+    def generate_qr_code(self):
+        self.qr_code = generate_qr(self.code)
+        self.save()
 
     def clean(self):
-        if self.due_date < date.today():
+        if self.due_date < date.today() and not self.pk:
             raise ValidationError('La fecha de devolución no puede ser menor a la fecha actual')       
     
     def save(self, *args, **kwargs):
@@ -54,9 +59,11 @@ class Loan(models.Model):
             self.copy.availability_status = False
             self.copy.save()
             self.code = generate_code(length=12)
-            self.qr_code = generate_qr(self.code)
-        if self.created_date and timezone.is_naive(self.created_date):
-            self.created_date = timezone.make_aware(self.created_date, timezone.get_current_timezone())
+            self.qr_code = compress_img(generate_qr(self.code), folder="qrscodes", format="png")
+            
+            if self.created_date and timezone.is_naive(self.created_date):
+                self.created_date = timezone.make_aware(self.created_date, timezone.get_current_timezone())
+        
         super().save(*args, **kwargs)
 
 

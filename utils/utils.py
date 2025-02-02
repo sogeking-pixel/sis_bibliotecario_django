@@ -8,17 +8,16 @@ import qrcode
 from django.core.files import File
 from django.contrib.auth.decorators import login_required, user_passes_test
 from cloudinary.uploader import destroy
+from cloudinary.uploader import upload
+
 # Eliminar la imagen si existe
        
         
 
-def compress_img(photo, quality = 60):
-    image = Image.open(photo)
-    image_io = BytesIO()
-    image.save(image_io, format='JPEG', quality = quality)
-    ext = os.path.splitext(photo.name)[1]
-    new_filename = f"{uuid.uuid4()}{ext}"
-    return ContentFile(image_io.getvalue(), name=new_filename)
+def compress_img(photo, quality = "auto", folder = "", format = "jpg"):  
+    result = upload(photo, quality=quality, format=format, folder=folder)
+    return result['secure_url']
+
 
 def delete_img(photo):
     destroy(photo.public_id)
@@ -36,6 +35,7 @@ def generate_qr(code):
     img = qr.make_image(fill='black', back_color='white')
     buffer = BytesIO()
     img.save(buffer, format='PNG')
+    buffer.seek(0)
     file_name = f'qr_code_{code}.png'
     return File(buffer, name=file_name)
 

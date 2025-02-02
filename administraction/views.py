@@ -177,7 +177,7 @@ def author_create(request):
             form.save()
             messages.success(request, "Autor creado exitosamente")
         except Exception as e:
-            messages.error(request, "Error al crear el autor")
+            messages.error(request, f"Error al crear el autor: {e}")
     else:
         messages.error(request, f"Error en el formulario: {form.errors}")
         

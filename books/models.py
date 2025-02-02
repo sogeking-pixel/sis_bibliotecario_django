@@ -2,13 +2,15 @@ from django.db import models
 from administraction.models import Author
 from utils.utils import compress_img, delete_img
 from datetime import date
+from cloudinary.models import CloudinaryField
+
 # Create your models here.
 
 
 class Book(models.Model):
     title = models.CharField( max_length=255)
     abstract = models.TextField()
-    photo =  models.ImageField( upload_to='imagenes/Book/', height_field=None, width_field=None, max_length=None, blank=True, null=True, default='imagenes/Book/default.jpg')
+    photo =  CloudinaryField( 'imagenes/Book/', default='imagenes/Book/default.jpg')
     isbm = models.CharField( max_length=15, unique=True)
     num_page = models.PositiveIntegerField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -16,7 +18,7 @@ class Book(models.Model):
     
     def save(self,*args, **kwargs):
         if self.photo:
-            self.photo = compress_img(self.photo)       
+            self.photo = compress_img(self.photo, folder="books")       
         super().save(*args, **kwargs)
     
     def delete(self,*args, **kwargs):
