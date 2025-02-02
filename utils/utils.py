@@ -9,6 +9,7 @@ from django.core.files import File
 from django.contrib.auth.decorators import login_required, user_passes_test
 from cloudinary.uploader import destroy
 from cloudinary.uploader import upload
+import cloudinary.uploader
 
 # Eliminar la imagen si existe
        
@@ -37,7 +38,14 @@ def generate_qr(code):
     img.save(buffer, format='PNG')
     buffer.seek(0)
     file_name = f'qr_code_{code}.png'
-    return File(buffer, name=file_name)
+    
+    upload_result = cloudinary.uploader.upload(
+        buffer,
+        public_id=file_name,
+        folder="Loans_Qrs",
+        transformation={'quality': 'auto:eco'}
+    )
+    return upload_result['public_id']
 
 def generate_code(length = 10):
     return str(uuid.uuid4()).replace('-', '')[:length]

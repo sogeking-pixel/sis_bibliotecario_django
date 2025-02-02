@@ -12,7 +12,7 @@ from cloudinary.models import CloudinaryField
 class Loan(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     code = models.CharField(max_length=12, unique=True, null=True)
-    qr_code = CloudinaryField()
+    qr_code = CloudinaryField('photo', transformation={'quality': 'auto:eco'} , folder="Loans_Qrs" )
     copy = models.ForeignKey(Copy, on_delete=models.CASCADE)
     created_by_admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='loans_created')
     received_by_admin = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='loans_received')
@@ -46,9 +46,6 @@ class Loan(models.Model):
     def is_late_return(self):
         return self.is_returned and self.return_date.date() > self.due_date
     
-    def generate_qr_code(self):
-        self.qr_code = generate_qr(self.code)
-        self.save()
 
     def clean(self):
         if self.due_date < date.today() and not self.pk:
@@ -59,11 +56,7 @@ class Loan(models.Model):
             self.copy.availability_status = False
             self.copy.save()
             self.code = generate_code(length=12)
-            self.qr_code = compress_img(generate_qr(self.code), folder="qrscodes", format="png")
-            
-            if self.created_date and timezone.is_naive(self.created_date):
-                self.created_date = timezone.make_aware(self.created_date, timezone.get_current_timezone())
-        
+            self.qr_code = generate_qr(self.code)
         super().save(*args, **kwargs)
 
 

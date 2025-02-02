@@ -10,16 +10,11 @@ from cloudinary.models import CloudinaryField
 class Book(models.Model):
     title = models.CharField( max_length=255)
     abstract = models.TextField()
-    photo =  CloudinaryField( 'imagenes/Book/', default='imagenes/Book/default.jpg')
+    photo =  CloudinaryField('photo', transformation={'quality': 'auto:low'} , folder="Books" )
     isbm = models.CharField( max_length=15, unique=True)
     num_page = models.PositiveIntegerField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     publication_date = models.DateField(auto_now=False, auto_now_add=False)
-    
-    def save(self,*args, **kwargs):
-        if self.photo:
-            self.photo = compress_img(self.photo, folder="books")       
-        super().save(*args, **kwargs)
     
     def delete(self,*args, **kwargs):
         if self.photo:

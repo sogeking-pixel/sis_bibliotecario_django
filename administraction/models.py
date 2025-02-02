@@ -16,16 +16,14 @@ class Student(models.Model):
     number_phone = models.CharField(max_length=9)
     address = models.CharField( max_length=255)
     email = models.EmailField( max_length=255, unique=True)
-    photo = CloudinaryField('photo')
+    photo = CloudinaryField('photo', transformation={'quality': 'auto:low'} , folder="Students" )
     date_boarn  = models.DateField( )
     create_at = models.DateTimeField( auto_now_add=True)
     updated_at = models.DateTimeField( auto_now=True)
     
     def save(self,*args, **kwargs):
         if not self.pk:
-            self.code_student = generar_code(self.dni)
-        if self.photo:
-            self.photo = compress_img(self.photo, folder="students")       
+            self.code_student = generar_code(self.dni)    
         super().save(*args, **kwargs)
     
     def delete(self,*args, **kwargs):
@@ -56,17 +54,12 @@ class Author(models.Model):
     first_name =  models.CharField( max_length=50)
     last_name = models.CharField( max_length=50)
     nacionality =  models.CharField( max_length=50)
-    photo =  CloudinaryField('authors')
+    photo =  CloudinaryField('photo', transformation={'quality': 'auto:low'} , folder="Authors" )
     
     def delete(self,*args, **kwargs):
         if self.photo:
             delete_img(self.photo)
         super().delete(*args, **kwargs)
-    
-    def save(self,*args, **kwargs):
-        if self.photo:
-            self.photo = compress_img(self.photo, folder="authors")       
-        super().save(*args, **kwargs)
         
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
