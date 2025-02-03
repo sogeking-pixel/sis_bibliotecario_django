@@ -2,10 +2,9 @@ from django.db import models
 from administraction.models import Student, Sanction
 from books.models import Copy
 from django.contrib.auth.models import User
-from utils.utils import generate_qr, generate_code, compress_img
+from utils.utils import generate_qr, generate_code
 from datetime import date
 from django.core.exceptions import ValidationError
-from django.utils import timezone
 from cloudinary.models import CloudinaryField
 # Create your models here.
 

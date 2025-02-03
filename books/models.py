@@ -1,6 +1,6 @@
 from django.db import models
 from administraction.models import Author
-from utils.utils import compress_img, delete_img
+from utils.utils import  delete_img
 from datetime import date
 from cloudinary.models import CloudinaryField
 
@@ -19,7 +19,7 @@ class Book(models.Model):
     def delete(self,*args, **kwargs):
         if self.photo:
             delete_img(self.photo)
-        super().delete(self,*args, **kwargs)
+        super().delete(*args, **kwargs)
         
     def __str__(self):
        return f"{self.title} -- {self.author.first_name} {self.author.last_name}"

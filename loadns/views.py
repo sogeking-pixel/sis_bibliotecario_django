@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from administraction.models import Student, Author, Sanction
 from .models import Loan
@@ -25,7 +26,8 @@ def loan_main(request):
     """
     
     if request.method != 'GET':
-        return
+        return HttpResponseNotAllowed(['GET'])
+        
     
     loans = Loan.objects.all()
     
@@ -55,7 +57,8 @@ def loan_main(request):
 @admin_required
 def loan_create(request):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     
     form = LoanForm(request.POST, request.FILES)
     
@@ -70,7 +73,7 @@ def loan_create(request):
     loan = form.save(commit=False)
     loan.created_by_admin = request.user
     loan.save()
-    messages.success(request, "Prestamo creado exitosamente")
+    messages.success(request, "Préstamo creado exitosamente")
         
     return redirect(request.META.get('HTTP_REFERER', 'loan.index'))
     
@@ -93,7 +96,8 @@ def update_copy_status(copy):
 @admin_required
 def loan_return(request, id):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     loan = get_object_or_404(Loan, id=id)
     
     if loan.return_date:
@@ -121,26 +125,28 @@ def loan_return(request, id):
 @admin_required
 def loan_delete(request, id):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     
     loan = get_object_or_404(Loan, id=id)
     
     if loan.return_date:
-        messages.danger(request, "No se puede eliminar un prestamo que ya se ha devuelto")
+        messages.danger(request, "No se puede eliminar un préstamo que ya se ha devuelto")
         return redirect(request.META.get('HTTP_REFERER', 'loan.index'))
     
     copy = loan.copy
     copy.availability_status = True
     copy.save()
     loan.delete()
-    messages.info(request, "Prestamo eliminado exitosamente")
+    messages.info(request, "Préstamo eliminado exitosamente")
     return redirect(request.META.get('HTTP_REFERER', 'loan.index'))
 
 
 @admin_required
 def loan_show(request, id):
     if request.method != 'GET':
-        return
+        return HttpResponseNotAllowed(['GET'])
+
     loan = get_object_or_404(Loan, id=id)
     form = LoanUpdateForm(instance=loan)  
     context = {
@@ -155,14 +161,15 @@ def loan_show(request, id):
 @admin_required    
 def loan_update(request, id):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     loan = get_object_or_404(Loan, id=id)
     form = LoanUpdateForm(request.POST, request.FILES, instance=loan)
     if form.is_valid():
         form.save()
-        messages.success(request, "Prestamo actualizado exitosamente")
+        messages.success(request, "Préstamo actualizado exitosamente")
         
     else:
-        messages.error(request, f"Error al actualizar el prestamo: {form.errors}")
+        messages.error(request, f"Error al actualizar el préstamo: {form.errors}")
     return redirect('loan.show', id=id)
    

@@ -6,7 +6,7 @@ from .forms import BookForm, CopyForm
 from loadns.models import Loan
 from loadns.forms import LoanForm
 from utils.utils import admin_required
-
+from django.http import HttpResponseNotAllowed
 
 # Create your views here.
 
@@ -24,7 +24,7 @@ def book_main(request):
     """
     
     if request.method != 'GET':
-        return
+       return HttpResponseNotAllowed(['GET'])
     
     books = Book.objects.all()
     
@@ -51,12 +51,10 @@ def book_main(request):
 @admin_required
 def book_create(request):
     if request.method != 'POST':
-        return redirect(request.META.get('HTTP_REFERER', 'book.index'))
-    
+        return HttpResponseNotAllowed(['POST'])
     form = BookForm(request.POST, request.FILES)
     if form.is_valid():
         try:
-            
             form.save()
             messages.success(request, "Libro creado exitosamente")
         except Exception as e:
@@ -70,7 +68,8 @@ def book_create(request):
 @admin_required
 def book_delete(request, id):
     if request.method != 'POST':
-        return
+       return HttpResponseNotAllowed(['POST'])
+
     book = get_object_or_404(Book, id=id)
     book.delete()
     messages.info(request, "Libro eliminado exitosamente")
@@ -80,7 +79,8 @@ def book_delete(request, id):
 @admin_required
 def book_show(request, id):
     if request.method != 'GET':
-        return
+       return HttpResponseNotAllowed(['GET'])
+
     book = get_object_or_404(Book, id=id)
     form = BookForm(instance=book)
     
@@ -117,7 +117,8 @@ def book_show(request, id):
 @admin_required    
 def book_update(request, id):
     if request.method != 'POST':
-        return
+       return HttpResponseNotAllowed(['POST'])
+
     book = get_object_or_404(Book, id=id)
     form = BookForm(request.POST, request.FILES, instance=book)
     if form.is_valid():
@@ -144,7 +145,8 @@ def copy_main(request):
     """
     
     if request.method != 'GET':
-        return
+       return HttpResponseNotAllowed(['GET'])
+
     
     copies = Copy.objects.all()
     
@@ -170,7 +172,8 @@ def copy_main(request):
 @admin_required
 def copy_create(request):
     if request.method != 'POST':
-        return
+       return HttpResponseNotAllowed(['POST'])
+
     
     form = CopyForm(request.POST)
     if form.is_valid():
@@ -186,7 +189,8 @@ def copy_create(request):
 @admin_required
 def copy_delete(request, id):
     if request.method != 'POST':
-        return
+       return HttpResponseNotAllowed(['POST'])
+
     copy = get_object_or_404(Copy, id=id)
     copy.delete()
     messages.info(request, "Copia eliminada exitosamente")
@@ -196,7 +200,8 @@ def copy_delete(request, id):
 @admin_required
 def copy_show(request, id):
     if request.method != 'GET':
-        return
+       return HttpResponseNotAllowed(['GET'])
+
     copy = get_object_or_404(Copy, id=id)
     form = CopyForm(instance=copy)
     loan_form = LoanForm(initial={'copy': copy})
@@ -231,7 +236,8 @@ def copy_show(request, id):
 @admin_required    
 def copy_update(request, id):
     if request.method != 'POST':
-        return
+       return HttpResponseNotAllowed(['POST'])
+
     copy = get_object_or_404(Copy, id=id)
     form = CopyForm(request.POST, instance=copy)
     if form.is_valid():
