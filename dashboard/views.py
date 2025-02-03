@@ -4,10 +4,8 @@ from administraction.models import Student, Author, Sanction
 from loadns.models import Loan
 from books.models import Book, Copy
 
-from django.conf import settings
 from utils.utils import admin_required
 from django.db.models import Count
-from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from django.db.models.functions import TruncMonth, TruncWeek, TruncDay
 from django.db.models import Q, F
@@ -16,10 +14,10 @@ from django.db.models.functions import TruncDate
 
 
 # Create your views here.
-def error_403(request, exception):
+def error_403(request, exception=None):
     return render(request, 'home/page-403.html', status=403)
 
-def error_404(request, exception):
+def error_404(request, exception=None):
     return render(request, 'home/page-404.html', status=404)
 
 def error_500(request):

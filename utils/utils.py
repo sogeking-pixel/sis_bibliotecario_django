@@ -1,11 +1,7 @@
-import os
 import uuid
-from django.core.files.base import ContentFile
-from PIL import Image
+from django.core.exceptions import PermissionDenied
 from io import BytesIO
-from django.conf import settings
 import qrcode
-from django.core.files import File
 from django.contrib.auth.decorators import login_required, user_passes_test
 from cloudinary.uploader import destroy
 from cloudinary.uploader import upload
@@ -52,5 +48,9 @@ def generate_code(length = 10):
 
 
 def admin_required(view_func):
-    decorated_view_func = login_required(user_passes_test(lambda u: u.is_superuser)(view_func))
+    def check_admin(user):
+        if not user.is_superuser:
+            raise PermissionDenied
+        return True
+    decorated_view_func = login_required(user_passes_test(check_admin)(view_func))
     return decorated_view_func

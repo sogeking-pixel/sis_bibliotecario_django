@@ -9,6 +9,8 @@ from books.forms import BookForm
 from loadns.forms import LoanForm
 from django.contrib import messages
 from utils.utils import admin_required
+from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotAllowed
 
 
 
@@ -25,8 +27,8 @@ def user_main(request):
     """
     
     if request.method != 'GET':
-        return
-    
+        return HttpResponseNotAllowed(['GET'])
+
     students = Student.objects.all()
     
     context = {
@@ -47,7 +49,7 @@ def user_main(request):
 @admin_required 
 def user_create(request):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
     form = StudentForm(request.POST, request.FILES)
     if form.is_valid():
         # student = form.save(commit=False)
@@ -65,7 +67,7 @@ def user_create(request):
 @admin_required
 def user_delete(request, id):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
     
     student = get_object_or_404(Student, id=id)    
     student.delete()
@@ -76,7 +78,9 @@ def user_delete(request, id):
 @admin_required
 def user_show(request, id):
     if request.method != 'GET':
-        return
+        return HttpResponseNotAllowed(['GET'])
+
+        
     student = get_object_or_404(Student, id=id)
     form = StudentForm(instance=student)
     form.fields['dni'].widget.attrs['readonly'] = True
@@ -119,7 +123,8 @@ def user_show(request, id):
 @admin_required    
 def user_update(request, id):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     student = get_object_or_404(Student, id=id)
     form = StudentForm(request.POST, request.FILES, instance=student)
     if form.is_valid():
@@ -145,8 +150,8 @@ def author_main(request):
     """
     
     if request.method != 'GET':
-        return
-    
+        return HttpResponseNotAllowed(['GET'])
+        
     authors = Author.objects.all()
     table = {
         'title': 'Tabla Autor',
@@ -169,7 +174,7 @@ def author_main(request):
 @admin_required
 def author_create(request):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
     
     form = AuthorForm(request.POST, request.FILES)
     if form.is_valid():        
@@ -187,7 +192,8 @@ def author_create(request):
 @admin_required
 def author_delete(request, id):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     author = get_object_or_404(Author, id=id)    
     author.delete()
     messages.info(request, "Autor eliminado exitosamente")
@@ -197,7 +203,8 @@ def author_delete(request, id):
 @admin_required
 def author_show(request, id):
     if request.method != 'GET':
-        return
+        return HttpResponseNotAllowed(['GET'])
+
     author = get_object_or_404(Author, id=id)
     form = AuthorForm(instance=author)
     
@@ -236,7 +243,8 @@ def author_show(request, id):
 @admin_required    
 def author_update(request, id):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     author = get_object_or_404(Author, id=id)
     form = AuthorForm(request.POST, request.FILES, instance=author)
     if form.is_valid():
@@ -261,7 +269,8 @@ def sanction_main(request):
     """
     
     if request.method != 'GET':
-        return
+        return HttpResponseNotAllowed(['GET'])
+
     
     sanctions = Sanction.objects.all()
     
@@ -288,7 +297,8 @@ def sanction_main(request):
 @admin_required
 def sanction_create(request):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     
     form = SanctionForm(request.POST)
     if form.is_valid():
@@ -303,7 +313,8 @@ def sanction_create(request):
 @admin_required
 def sanction_delete(request, id):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     sanction = get_object_or_404(Sanction, id=id)
     sanction.delete()
     messages.info(request, "Sanción eliminada exitosamente")
@@ -313,7 +324,8 @@ def sanction_delete(request, id):
 @admin_required
 def sanction_show(request, id):
     if request.method != 'GET':
-        return
+        return HttpResponseNotAllowed(['GET'])
+
     sanction = get_object_or_404(Sanction, id=id)
     form = SanctionForm(instance=sanction)
     
@@ -341,7 +353,8 @@ def sanction_show(request, id):
 @admin_required    
 def sanction_update(request, id):
     if request.method != 'POST':
-        return
+        return HttpResponseNotAllowed(['POST'])
+
     sanction = get_object_or_404(Sanction, id=id)
     form = SanctionForm(request.POST, instance=sanction)
     if form.is_valid():

@@ -7,3 +7,9 @@ class TestView(TestCase):
         response = client.get(reverse('login'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home/login.html')
+    
+    # def test_logout_index(self):
+    #     client = Client()
+    #     response = client.get(reverse('logout'))
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'home/login.html')

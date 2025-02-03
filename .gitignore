@@ -35,3 +35,5 @@ venv.bak/
 avance.txt
 link.txt
 templates/home/map.html
+
+staticfiles/
