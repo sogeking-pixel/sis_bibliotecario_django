@@ -47,14 +47,15 @@ INSTALLED_APPS = [
 ]
 
 # Database configuration
-# Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+    }
 }
 
 # Cloudinary Settings
@@ -137,12 +138,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# if not DEBUG:
-#     # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#     # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
-#     # and renames the files with unique names for each version to support long-term caching
-#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Media files
 # MEDIA_URL = f"https://res.cloudinary.com/{config('CLOUDINARY_CLOUD_NAME')}/"
 # MEDIA_ROOT = BASE_DIR / 'media'
