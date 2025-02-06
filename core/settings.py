@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security Settings
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = []
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
@@ -47,6 +47,8 @@ INSTALLED_APPS = [
 ]
 
 # Database configuration
+# Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
