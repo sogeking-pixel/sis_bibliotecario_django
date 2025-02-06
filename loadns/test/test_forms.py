@@ -5,7 +5,6 @@ from administraction.models import Student, Author, Sanction
 from books.models import Book, Copy
 from django.contrib.auth.models import User
 
-from django.core.files.uploadedfile import SimpleUploadedFile
 from loadns.forms import LoanForm, LoanReturnForm
 from loadns.models import Loan
         

@@ -3,7 +3,6 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from administraction.models import Student, Author, Sanction
 from .models import Loan
-from books.models import Book, Copy
 from .forms import LoanForm, LoanUpdateForm, LoanReturnForm
 from django.contrib import messages
 from utils.utils import admin_required

@@ -3,6 +3,7 @@ from administraction.models import Student, Sanction
 from books.models import Copy
 from django.contrib.auth.models import User
 from utils.utils import generate_qr, generate_code
+from utils.utils import  delete_img
 from datetime import date
 from django.core.exceptions import ValidationError
 from cloudinary.models import CloudinaryField
@@ -45,6 +46,10 @@ class Loan(models.Model):
     def is_late_return(self):
         return self.is_returned and self.return_date.date() > self.due_date
     
+    def delete(self,*args, **kwargs):
+        if self.qr_code:
+            delete_img(self.qr_code)
+        super().delete(*args, **kwargs)
 
     def clean(self):
         if not self.due_date:
