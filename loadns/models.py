@@ -47,6 +47,8 @@ class Loan(models.Model):
     
 
     def clean(self):
+        if not self.due_date:
+            raise ValidationError('Ingresar fecha de devolucion')  
         if self.due_date < date.today() and not self.pk:
             raise ValidationError('La fecha de devolución no puede ser menor a la fecha actual')       
     

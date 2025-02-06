@@ -35,6 +35,8 @@ class TestStudentForm(TestCase):  # Changed to TestCase since we're working with
     def test_student_form_no_data(self):
         form = StudentForm(data={}, files={})
         self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 9)
+        
         
     def tearDown(self):
         # Clean up any created files or test data
