@@ -24,7 +24,7 @@ def error_500(request):
     return render(request, 'home/page-500.html', status=500)
 
 def calculate_percentage(current, previous):
-    return ((current - previous) / previous * 100) if previous else 0
+    return round(((current - previous) / previous * 100), 2) if previous else 0
 
 @admin_required
 def index(request):
