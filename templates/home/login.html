@@ -20,9 +20,19 @@ Login {% endblock title %}
         </div>
 
         <div class="card-body px-lg-5 py-lg-4">
-          <div class="text-center text-muted mb-4">
-            <small>Ingrese sus credenciales</small>
+          <div class="text-center mb-4">
+            <p>Ingrese sus credenciales</p>
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger p-1">
+                {% for error in form.non_field_errors %}
+                  <small class="">{{ error }}</small>
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
+          
+
+
           <form role="form" method="POST" action="{% url 'login' %}">
             {% csrf_token %}
 
@@ -39,21 +49,35 @@ Login {% endblock title %}
             </div>
 
             <div class="form-group">
-              <div class="input-group input-group-merge input-group-alternative" >
-
+              <div class="input-group input-group-merge input-group-alternative">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="ni ni-lock-circle-open"></i>
                   </span>
                 </div>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Contrasena" required>
+                <input type="password" name="password" class="form-control" id="password" placeholder="Contraseña" required>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary " type="button" id="togglePassword">
+                    <i class="fa fa-eye text-primary"></i>
+                  </button>
+                </div>
               </div>
-
             </div>
 
+            <script>
+              document.getElementById('togglePassword').addEventListener('click', function () {
+                const passwordField = document.getElementById('password');
+                // Verifica el tipo actual y lo alterna
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+                // Opcional: alternar el icono (por ejemplo, cambiar de ojo a ojo tachado)
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+              });
+            </script>
+
             <div class="custom-control custom-control-alternative custom-checkbox" >
-              <input class="custom-control-input" id=" customCheckLogin" type="checkbox" />
-              <label class="custom-control-label" for=" customCheckLogin">
+              <input class="custom-control-input" id="customCheckLogin" type="checkbox" />
+              <label class="custom-control-label" for="customCheckLogin">
                 <span class="text-muted">Remember me</span>
               </label>
             </div>
